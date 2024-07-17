@@ -1,9 +1,4 @@
-import 'package:blossom_hostel_flutter/common/constants.dart';
-import 'package:blossom_hostel_flutter/common/custom_text_field.dart';
-import 'package:blossom_hostel_flutter/common/spacing.dart';
-import 'package:blossom_hostel_flutter/features/home/screens/home.dart';
-import 'package:blossom_hostel_flutter/theme/colors.dart';
-import 'package:blossom_hostel_flutter/theme/text_theme.dart';
+import 'package:blossom_house_hosatel/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
