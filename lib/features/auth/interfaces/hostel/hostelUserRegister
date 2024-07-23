@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:your_app/models/user.dart';
+import 'package:your_app/models/hostel.dart';
+
+class HostelUserRegister extends StatefulWidget {
+  const HostelUserRegister({super.key});
+
+  @override
+  State<HostelUserRegister> createState() => _HostelUserRegisterState();
+}
+
+class _HostelUserRegisterState extends State<HostelUserRegister> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String? selectedHostel;
+
+  Future<void> _registerUser() async {
+    if (_formKey.currentState!.validate() && selectedHostel != null) {
+      var usersBox = Hive.box<User>('users');
+      var newUser = User(
+        username: usernameController.text,
+        password: passwordController.text,
+        hostelName: selectedHostel!,
+      );
+      await usersBox.add(newUser);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User Registration Successful')),
+      );
+      Navigator.pop(context); 
+    }
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var hostelsBox = Hive.box<Hostel>('hostels');
+    return Scaffold(
+      appBar: AppBar(title: Text('Register User')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: usernameController,
+                decoration: InputDecoration(labelText: 'Username'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Username is required';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Password is required';
+                  }
+                  return null;
+                },
+              ),
+              DropdownButtonFormField<String>(
+                value: selectedHostel,
+                decoration: InputDecoration(labelText: 'Hostel'),
+                items: hostelsBox.values.map((hostel) {
+                  return DropdownMenuItem<String>(
+                    value: hostel.hostelName,
+                    child: Text(hostel.hostelName),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedHostel = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a hostel';
+                  }
+                  return null;
+                },
+              ),
+              ElevatedButton(
+                onPressed: _registerUser,
+                child: Text('Register User'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

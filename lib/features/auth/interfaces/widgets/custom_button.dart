@@ -26,14 +26,14 @@ class CustomButton extends StatelessWidget {
     width:double.maxFinite,
     height:50.h,
     decoration:BoxDecoration(
-      color: Colors.blue[900],
+      color: Color.fromARGB(255, 2, 22, 53),
     borderRadius:BorderRadius.circular(14.r),
     ),
     child:Center(
       child:Text(
        buttonText,
     style:AppTextTheme.kLabelStyle.copyWith(
-      color:buttonColor ?? Color.fromARGB(255, 102, 84, 201), fontSize: size ?? 16),
+      color:buttonColor ?? Color.fromARGB(255, 28, 13, 116), fontSize: size ?? 16),
       )
       ),
       ));

@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:your_app/models/hostel.dart';
+
+class HostelRegister extends StatefulWidget {
+  const HostelRegister({super.key});
+
+  @override
+  State<HostelRegister> createState() => _HostelRegisterState();
+}
+
+class _HostelRegisterState extends State<HostelRegister> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController hostelNameController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController serviceUrlController = TextEditingController();
+
+  Future<void> _registerHostel() async {
+    if (_formKey.currentState!.validate()) {
+      var hostelsBox = Hive.box<Hostel>('hostels');
+      var newHostel = Hostel(
+        hostelName: hostelNameController.text,
+        location: locationController.text,
+        serviceUrl: serviceUrlController.text,
+      );
+      await hostelsBox.add(newHostel);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Hostel Registration Successful')),
+      );
+      Navigator.pop(context); 
+    }
+  }
+
+  @override
+  void dispose() {
+    hostelNameController.dispose();
+    locationController.dispose();
+    serviceUrlController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Register Hostel')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: hostelNameController,
+                decoration: InputDecoration(labelText: 'Hostel Name'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Hostel Name is required';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: locationController,
+                decoration: InputDecoration(labelText: 'Location'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Location is required';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: serviceUrlController,
+                decoration: InputDecoration(labelText: 'Service URL'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Service URL is required';
+                  }
+                  return null;
+                },
+              ),
+              ElevatedButton(
+                onPressed: _registerHostel,
+                child: Text('Register Hostel'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

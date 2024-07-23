@@ -1,4 +1,7 @@
 import 'package:blossom_house_hosatel/theme/colors.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +10,7 @@ class AppTextTheme {
   static TextStyle kLabelStyle = GoogleFonts.inter(
     color: AppColors.kSecondaryColor,
     fontWeight: FontWeight.w500,
+
     fontSize: 14,
   );
   static TextStyle kPrimaryStyle = GoogleFonts.inter(
