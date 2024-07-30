@@ -1,3 +1,4 @@
+import 'package:blossom_house_hosatel/features/home/interfaces/home.dart';
 import 'package:blossom_house_hosatel/hostel.dart';
 import 'package:blossom_house_hosatel/user.dart';
 import 'package:flutter/material.dart';
@@ -5,32 +6,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:blossom_house_hosatel/features/auth/interfaces/login.dart';
+import 'package:blossom_house_hosatel/features/auth/interfaces/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print('Initializing Hive...');
   await Hive.initFlutter();
-  print('Hive initialized');
-
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(HostelAdapter());
-  print('Adapters registered');
-
-
-//await Hive.deleteBoxFromDisk('users');
-  //await Hive.deleteBoxFromDisk('hostels');
-
 
   await Hive.openBox<User>('users');
   await Hive.openBox<Hostel>('hostels');
-  print('Boxes opened');
+  var settingsBox = await Hive.openBox('settings');
 
-  runApp(MyApp());
-  print('RunApp called');
+  String? hostelName = settingsBox.get('hostelName');
+
+  runApp(MyApp(hostelName: hostelName));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String? hostelName;
+
+  const MyApp({super.key, this.hostelName});
 
   @override
   Widget build(BuildContext context) {
@@ -42,23 +38,9 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Student Hostel',
-          home: const Login(),
+          home: hostelName == null ? const Login() : Login(),
         );
       },
     );
   }
 }
-
-/*
-class Login extends StatelessWidget {
-  const Login({super.key});
-*/
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Login"),
-      ),
-    );
-  }
-//}

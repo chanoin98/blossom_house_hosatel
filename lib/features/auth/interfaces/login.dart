@@ -29,7 +29,7 @@ class _LoginState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController hostelController = TextEditingController();
-  String? hostelName;
+  String? savedHostelName;
 
   @override
   void initState() {
@@ -39,10 +39,14 @@ class _LoginState extends State<Login> {
   Future<void> _loadSavedHostelName() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      hostelController.text = prefs.getString('savedHostelName') ?? '';
+      savedHostelName = prefs.getString('hostelName');
     });
   }
 
+  Future<void> _saveHostelName(String hostelName) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('hostelName', hostelName);
+  }
   Future<void> _loginUser() async {
     if (_formKey.currentState!.validate()) {
       var usersBox = Hive.box<User>('users');
@@ -54,6 +58,7 @@ class _LoginState extends State<Login> {
 */
 
       User? user;
+
       for (int i = 0; i < usersBox.length; i++) {
         var tempUser = usersBox.getAt(i);
         if (tempUser?.username == usernameController.text) {
@@ -62,13 +67,10 @@ class _LoginState extends State<Login> {
         }
       }
 
-      if (user != null && user.password == passwordController.text) {
-         setState(() {
-          hostelName = user!.hostelName;
-        });
-
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('savedHostelName', user!.hostelName);
+     if (user != null && user.password == passwordController.text) {
+        if (savedHostelName == null) {
+          await _saveHostelName(hostelController.text);
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login Successful')),
@@ -80,11 +82,8 @@ class _LoginState extends State<Login> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Invalid username or password')),
-        );
-      }
-    }
-  }
-
+        );}}}
+    
 
   @override
   void dispose() {
@@ -153,20 +152,21 @@ body: Container(
                   ),
                 ),
                  heightSpacer(27),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Hostel Name",
-                       style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.blue[900],
-                      fontWeight: FontWeight.w500,
-
-                      ),
-                      
-        ),),
-
-                  
+                  if (savedHostelName == null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Hostel Name",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.blue[900],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                   CustomTextField(
                     controller: hostelController,
                     enabledBorder: OutlineInputBorder(
@@ -182,7 +182,7 @@ body: Container(
                     },
                   ),
                 heightSpacer(25),
-
+                      ],),
                   Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -248,16 +248,7 @@ body: Container(
                   size: 17,
                 ),
                  heightSpacer(10),
-                  if (hostelName != null) 
-                    Text(
-                      'Hostel: $hostelName',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                heightSpacer(10),
+                 
                 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -274,13 +265,13 @@ body: Container(
                       },
                       child: Text('Register'),
 
-                    ),
-
-                  ],
-                ),
-              ],
+                   ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),),
+          ),
         ),
       ),
     );

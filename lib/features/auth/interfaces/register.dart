@@ -106,6 +106,7 @@ class _RegisterState extends State<Register> {
                     return null;
                   },
                 ),
+               /*
                 heightSpacer(27),
                 Text(
                   "Username",
@@ -121,6 +122,26 @@ class _RegisterState extends State<Register> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Username is required';
+                    }
+                    return null;
+                  },
+                ),
+                */
+                 heightSpacer(15),
+                Text(
+                  "User Name",
+                  style: AppTextTheme.kLabelStyle,
+                ),
+                CustomTextField(
+                  controller: firstName,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  inputHint: "Enter User Name",
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'User Name is required';
                     }
                     return null;
                   },
@@ -300,8 +321,8 @@ class _RegisterState extends State<Register> {
                 CustomButton(
                   buttonText: 'Register',
                   onTap: _registerUser,
-                  buttonColor: null,
-                  size: null,
+                  buttonColor: Colors.white,
+                  size: 16,
                 ),
                 heightSpacer(10),
               ],

@@ -1,20 +1,46 @@
 import 'package:blossom_house_hosatel/common/constants.dart';
 import 'package:blossom_house_hosatel/common/spacing.dart';
+import 'package:blossom_house_hosatel/features/auth/interfaces/login.dart';
+import 'package:blossom_house_hosatel/features/home/interfaces/widgets/category_card.dart';
+import 'package:blossom_house_hosatel/features/student/interfaces/create_issue.dart';
 import 'package:blossom_house_hosatel/theme/text_theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
 class Home extends StatefulWidget {
   const Home({super.key});
 
+  
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+   Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('hostelName');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Login()),
+    );
+  }
+  
+  Future<void> _clearLoginInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('hostelName');
+    await prefs.remove('username');
+    await prefs.remove('password');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Login information cleared')),
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,23 +124,46 @@ class _HomeState extends State<Home> {
                       ),
                       ],
                     ),
+
+             /*     widthSpacer(10),
+                    IconButton(
+                      icon: ImageIcon(
+                        AssetImage('assets/create_issue.jpg'),
+                      ),
+                      iconSize: 165.0, 
+                      onPressed: () {
+                      },
+                    ),
+                    */
                     widthSpacer(10),
                     Column(
-                      children:[
-                        SvgPicture.asset(AppConstants.createIssue),
-                        const Text(
+                      children: [
+                        InkWell(
+                          onTap:(){
+                          Navigator.push(
+                            context, MaterialPageRoute(
+                              builder:(context)=>
+                              const StudentCreateIssue(),
+                              ),
+                              );
+                        },
+
+                        
+                       child: SvgPicture.asset(AppConstants.createIssue),
+                       ),
+                         Text(
                           "Create issue",
-                          style:TextStyle(fontSize:16,
-                          fontWeight:FontWeight.w700,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                           ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
-                ),
-
               ),
+            ),
               heightSpacer(30),
               Container(
                 width:double.maxFinite,
@@ -136,13 +185,60 @@ class _HomeState extends State<Home> {
                       ),
                     
                     ),
-                    heightSpacer(15),
-                  ],
-                ),
-              )
-              ],
+                     heightSpacer(15),
+                  Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceAround,
+                    children: [
+                      CategoryCard(
+                        category: 'Room\nAvailability',
+                        
+                        onTap: () {},
+                        image: AppConstants.roomAvailability,
+                      ),
+                       CategoryCard(
+                        category: 'All\nIssues',
+                        onTap: () {},
+                        image: AppConstants.roomAvailability,
+                      ),
+                       CategoryCard(
+                        category: 'Staff\nMembers',
+                        onTap: () {},
+                        image: AppConstants.staffMember,
+                      ),
+                    ],
+                  ),
+                  heightSpacer(20),
+                   Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceAround,
+                    children: [
+                      CategoryCard(
+                        category: 'Create\nStaff',
+                        onTap: () {},
+                        image: AppConstants.roomAvailability,
+                      ),
+                       CategoryCard(
+                        category: 'Hostel\nFee',
+                        onTap: () {},
+                        image: AppConstants.roomAvailability,
+                      ),
+                       CategoryCard(
+                        category: 'Change\nRequests',
+                        onTap: () {},
+                        image: AppConstants.staffMember,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
+            heightSpacer(30),
+            ElevatedButton(
+              onPressed: _clearLoginInfo,
+              child: Text('Clear Login Information'),
             ),
+          ],
+        ),
+      ),
     );
   }
 }
