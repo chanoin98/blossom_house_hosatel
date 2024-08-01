@@ -7,6 +7,7 @@ import 'package:blossom_house_hosatel/features/admin/interfaces/staff_display.da
 import 'package:blossom_house_hosatel/features/auth/interfaces/login.dart';
 import 'package:blossom_house_hosatel/features/home/interfaces/widgets/category_card.dart';
 import 'package:blossom_house_hosatel/features/student/interfaces/create_issue.dart';
+import 'package:blossom_house_hosatel/features/student/interfaces/hostel_fee.dart';
 import 'package:blossom_house_hosatel/features/student/interfaces/room_availability.dart';
 import 'package:blossom_house_hosatel/theme/text_theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -258,7 +259,15 @@ class _HomeState extends State<Home> {
                       ),
                        CategoryCard(
                         category: 'Hostel\nFee',
-                        onTap: () {},
+                        onTap: () {
+                           Navigator.push(
+                            context, 
+                            CupertinoPageRoute(
+                              builder:(context)=>
+                              const HostelFee(),
+                              ),
+                              );
+                        },
                         image: AppConstants.roomAvailability,
                       ),
                        CategoryCard(
