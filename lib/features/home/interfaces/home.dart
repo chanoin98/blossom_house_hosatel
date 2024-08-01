@@ -1,6 +1,7 @@
 import 'package:blossom_house_hosatel/common/constants.dart';
 import 'package:blossom_house_hosatel/common/spacing.dart';
 import 'package:blossom_house_hosatel/features/admin/interfaces/create_staff.dart';
+import 'package:blossom_house_hosatel/features/admin/interfaces/issue.dart';
 import 'package:blossom_house_hosatel/features/admin/interfaces/staff_display.dart';
 import 'package:blossom_house_hosatel/features/auth/interfaces/login.dart';
 import 'package:blossom_house_hosatel/features/home/interfaces/widgets/category_card.dart';
@@ -210,7 +211,15 @@ class _HomeState extends State<Home> {
                       ),
                        CategoryCard(
                         category: 'All\nIssues',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            CupertinoPageRoute(
+                              builder:(context)=>
+                              const Issue(),
+                              ),
+                              );
+                        },
                         image: AppConstants.roomAvailability,
                       ),
                        CategoryCard(
