@@ -2,6 +2,7 @@ import 'package:blossom_house_hosatel/common/constants.dart';
 import 'package:blossom_house_hosatel/common/spacing.dart';
 import 'package:blossom_house_hosatel/features/admin/interfaces/create_staff.dart';
 import 'package:blossom_house_hosatel/features/admin/interfaces/issue.dart';
+import 'package:blossom_house_hosatel/features/admin/interfaces/room_change_request.dart';
 import 'package:blossom_house_hosatel/features/admin/interfaces/staff_display.dart';
 import 'package:blossom_house_hosatel/features/auth/interfaces/login.dart';
 import 'package:blossom_house_hosatel/features/home/interfaces/widgets/category_card.dart';
@@ -262,7 +263,15 @@ class _HomeState extends State<Home> {
                       ),
                        CategoryCard(
                         category: 'Change\nRequests',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            CupertinoPageRoute(
+                              builder:(context)=>
+                              const RoomChangeRequest(),
+                              ),
+                              );
+                        },
                         image: AppConstants.staffMember,
                       ),
                     ],
