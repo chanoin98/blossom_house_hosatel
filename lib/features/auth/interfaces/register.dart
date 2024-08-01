@@ -17,7 +17,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
   TextEditingController hostelName = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -133,7 +133,7 @@ class _RegisterState extends State<Register> {
                   style: AppTextTheme.kLabelStyle,
                 ),
                 CustomTextField(
-                  controller: firstName,
+                  controller: username,
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.circular(10),

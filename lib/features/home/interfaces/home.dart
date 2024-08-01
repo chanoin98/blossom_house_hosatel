@@ -1,9 +1,13 @@
 import 'package:blossom_house_hosatel/common/constants.dart';
 import 'package:blossom_house_hosatel/common/spacing.dart';
+import 'package:blossom_house_hosatel/features/admin/interfaces/create_staff.dart';
+import 'package:blossom_house_hosatel/features/admin/interfaces/staff_display.dart';
 import 'package:blossom_house_hosatel/features/auth/interfaces/login.dart';
 import 'package:blossom_house_hosatel/features/home/interfaces/widgets/category_card.dart';
 import 'package:blossom_house_hosatel/features/student/interfaces/create_issue.dart';
+import 'package:blossom_house_hosatel/features/student/interfaces/room_availability.dart';
 import 'package:blossom_house_hosatel/theme/text_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -141,7 +145,8 @@ class _HomeState extends State<Home> {
                         InkWell(
                           onTap:(){
                           Navigator.push(
-                            context, MaterialPageRoute(
+                            context, 
+                            CupertinoPageRoute(
                               builder:(context)=>
                               const StudentCreateIssue(),
                               ),
@@ -192,7 +197,15 @@ class _HomeState extends State<Home> {
                       CategoryCard(
                         category: 'Room\nAvailability',
                         
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            CupertinoPageRoute(
+                              builder:(context)=>
+                              const RoomAvailability(),
+                              ),
+                              );
+                        },
                         image: AppConstants.roomAvailability,
                       ),
                        CategoryCard(
@@ -202,7 +215,15 @@ class _HomeState extends State<Home> {
                       ),
                        CategoryCard(
                         category: 'Staff\nMembers',
-                        onTap: () {},
+                        onTap: () {
+                           Navigator.push(
+                            context, 
+                            CupertinoPageRoute(
+                              builder:(context)=>
+                              const StaffDisplay(),
+                              ),
+                              );
+                        },
                         image: AppConstants.staffMember,
                       ),
                     ],
@@ -213,7 +234,16 @@ class _HomeState extends State<Home> {
                     children: [
                       CategoryCard(
                         category: 'Create\nStaff',
-                        onTap: () {},
+                        onTap: () {
+                           Navigator.push(
+                            context, 
+                            CupertinoPageRoute(
+                              builder:(context)=>
+                              const CreateStaff(),
+                              ),
+                              );
+                        },
+                        
                         image: AppConstants.roomAvailability,
                       ),
                        CategoryCard(
